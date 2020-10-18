@@ -10,8 +10,8 @@ register = template.Library()
 def subtotal(quantity: int, price: Number) -> float:
     """
     Returns a subtotal of the given inputs, quantity * price.
-    :param quantity:
-    :param price:
+    :type quantity: Int
+    :type price: Number (int or float).
     :return:
     """
     return int(quantity) * float(price)
@@ -21,11 +21,26 @@ def subtotal(quantity: int, price: Number) -> float:
 def as_currency(amount: Number, currency_symbol: str = "$") -> str:
     """
     Formats the given amount as a currency.
-    :param amount: Number (int or float).
+    :type amount: Number (int or float).
     :param currency_symbol: The symbol for the given currency. Defaults to '$'.
     :return: String in the format of "$200.00".
     """
     return "{}{:,.2f}".format(currency_symbol, float(amount))
+
+
+@register.filter()
+def product_total(quantity: int, price: Number, currency_symbol: str = "$") -> str:
+    """
+    Returns a subtotal of the given inputs, quantity * price.
+    :type quantity: Int
+    :type price: Number (int or float)
+    :param currency_symbol: The symbol for the given currency. Defaults to '$'.
+    :return: String in the format of "$200.00".
+    """
+    qty = int(quantity)
+    price = float(price)
+    product_subtotal = subtotal(qty, price)
+    return as_currency(product_subtotal, currency_symbol)
 
 
 @register.filter
