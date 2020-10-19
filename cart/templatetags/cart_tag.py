@@ -1,5 +1,5 @@
 from django import template
-from typing import Union, List
+from typing import Union
 
 Number = Union[int, float]
 
@@ -18,29 +18,30 @@ def subtotal(quantity: int, price: Number) -> float:
 
 
 @register.filter
-def as_currency(amount: Number, currency_symbol: str = "$") -> str:
+def as_currency(amount: Number, rate: float = 1, currency_symbol: str = "$") -> str:
     """
     Formats the given amount as a currency.
     :type amount: Number (int or float).
+    :param rate: Multiply 'amount' by 'rate', useful for currency conversion.
     :param currency_symbol: The symbol for the given currency. Defaults to '$'.
     :return: String in the format of "$200.00".
     """
-    return "{}{:,.2f}".format(currency_symbol, float(amount))
+    return "{}{:,.2f}".format(currency_symbol, float(amount) * rate)
 
 
 @register.filter()
 def product_total(quantity: int, price: Number, currency_symbol: str = "$") -> str:
     """
     Returns a subtotal of the given inputs, quantity * price.
-    :type quantity: Int
-    :type price: Number (int or float)
+    :type quantity: Int.
+    :type price: Number (int or float).
     :param currency_symbol: The symbol for the given currency. Defaults to '$'.
     :return: String in the format of "$200.00".
     """
     qty = int(quantity)
     price = float(price)
     product_subtotal = subtotal(qty, price)
-    return as_currency(product_subtotal, currency_symbol)
+    return as_currency(product_subtotal, currency_symbol=currency_symbol)
 
 
 @register.filter
@@ -71,7 +72,7 @@ def cart_total(a, currency_symbol: str = "$") -> str:
     :return: Str in the format of "$200.00".
     """
     total = sum_list(a)
-    return as_currency(total, currency_symbol)
+    return as_currency(total, currency_symbol=currency_symbol)
 
 
 @register.filter
