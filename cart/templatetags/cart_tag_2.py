@@ -46,7 +46,7 @@ def product_total(quantity: int, price: Number) -> str:
 
 
 @register.filter
-def sum_list(a) -> float:
+def sum_cart(a) -> float:
     """
     Gets the subtotal of each item in the cart.
     :param a: List of products. Untyped as I'm unsure how 'dict_items' type truly works.
@@ -71,7 +71,7 @@ def cart_total(a) -> str:
     :param a: List of products. Untyped as I'm unsure how 'dict_items' type truly works.
     :return: Str in the format of "200.00".
     """
-    total = sum_list(a)
+    total = sum_cart(a)
     return as_currency(total)
 
 
