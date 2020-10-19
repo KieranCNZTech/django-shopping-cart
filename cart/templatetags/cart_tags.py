@@ -19,7 +19,7 @@ def product_subtotal(product) -> float:
         pass
 
 
-@register.filter
+@register.simple_tag
 def as_currency(amount: Number, rate: float = 1.0):
     """
     Formats the given amount as a currency.

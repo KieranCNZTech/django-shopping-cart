@@ -7,13 +7,6 @@ class Cart(object):
         self.request = request
         self.session = request.session
         # Makes an empty cart if one does not exist then save it.
-        currency_data = {
-            'currency_data': {
-                'rate': 1.0,
-                'short': 'USD',
-                'symbol': '$'
-            }
-        }
         self.cart = self.session.get(settings.CART_SESSION_ID, {})
         if self.cart == {}:
             self.save()
