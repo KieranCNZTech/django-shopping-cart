@@ -26,7 +26,7 @@ def as_currency(amount: Number, rate: float = 1, currency_symbol: str = "$") -> 
     :param currency_symbol: The symbol for the given currency. Defaults to '$'.
     :return: String in the format of "$200.00".
     """
-    return "{}{:,.2f}".format(currency_symbol, float(amount) * rate)
+    return "{}{:,.2f}".format(currency_symbol, (float(amount) * rate))
 
 
 @register.filter()
