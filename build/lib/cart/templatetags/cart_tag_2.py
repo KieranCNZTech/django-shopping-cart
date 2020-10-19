@@ -26,7 +26,7 @@ def as_currency(amount: Number, rate: float = 1.0):
     :return: String in the format of "200.00".
     """
     total = float(amount) * float(rate)
-    str_total = "{:,.2f} test test".format(total)
+    str_total = "{:,.2f}".format(total)
 
     return str_total
 
