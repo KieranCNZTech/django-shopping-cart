@@ -17,7 +17,7 @@ def subtotal(quantity: int, price: Number) -> float:
     return int(quantity) * float(price)
 
 
-@register.simple_tag
+@register.filter
 def as_currency(amount: Number, rate: float = 1) -> str:
     """
     Formats the given amount as a currency.
