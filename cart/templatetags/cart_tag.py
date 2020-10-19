@@ -25,7 +25,7 @@ def as_currency(amount: Number, rate: float = 1) -> str:
     :param rate: Multiply 'amount' by 'rate', useful for currency conversion.
     :return: String in the format of "200.00".
     """
-    return "{:,.2f}".format((float(amount) * rate))
+    return "{:,.2f}".format(float(amount) * float(rate))
 
 
 @register.filter()
