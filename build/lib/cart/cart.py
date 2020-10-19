@@ -24,7 +24,7 @@ class Cart(object):
                 'userid': self.request.user.id,
                 'product_id': p_id,
                 'name': product.name,
-                'quantity': quantity,
+                'quantity': int(quantity),
                 'price': str(product.price)
             }
             self.save()
@@ -54,11 +54,12 @@ class Cart(object):
         :param new_qty: New quantity to give to the product. Will remove the product is this reaches 0.
         """
         p_id = product.id
-        if str(p_id) in self.cart.keys():
+        p_id_str = str(p_id)
+        if p_id_str in self.cart.keys():
             if new_qty == 0:
                 self.remove(product)
             else:
-                self.cart[product.id]['quantity'] = new_qty
+                self.cart[p_id_str]['quantity'] = new_qty
                 self.save()
 
     def clear(self):
