@@ -72,3 +72,20 @@ def cart_total(a, currency_symbol: str = "$") -> str:
     """
     total = sum_list(a)
     return as_currency(total, currency_symbol)
+
+
+@register.filter
+def cart_count(a) -> int:
+    """
+    Count the number of items in the cart.
+    :param a: List of products. Untyped as I'm unsure how 'dict_items' type truly works.
+    :return: Int of the number of items in the cart.
+    """
+    count = 0
+    # a is of type 'dict_items'
+    for i, this_tuple in enumerate(a):
+        # key is product id, value is dictionary of product data
+        values = this_tuple[1]
+        count += values['quantity']
+
+    return count
