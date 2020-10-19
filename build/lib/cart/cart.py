@@ -19,17 +19,19 @@ class Cart(object):
         :param quantity: How much of the product to add to the cart.
         """
         p_id = product.id
-        if str(product.id) not in self.cart.keys():
-            self.cart[product.id] = {
+        p_id_str = str(p_id)
+        if p_id_str not in self.cart.keys():
+            self.cart[p_id] = {
                 'userid': self.request.user.id,
                 'product_id': p_id,
                 'name': product.name,
                 'quantity': int(quantity),
                 'price': str(product.price)
             }
-            self.save()
         else:
-            self.edit_quantity(product, quantity)
+            self.cart[p_id_str]['quantity'] += quantity
+
+        self.save()
 
     def save(self):
         # update the session cart
@@ -60,7 +62,7 @@ class Cart(object):
                 self.remove(product)
             else:
                 self.cart[p_id_str]['quantity'] = new_qty
-                self.save()
+            self.save()
 
     def clear(self):
         # empty cart
