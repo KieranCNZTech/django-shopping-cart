@@ -18,15 +18,14 @@ def subtotal(quantity: int, price: Number) -> float:
 
 
 @register.filter
-def as_currency(amount: Number, rate: float = 1, currency_symbol: str = "$") -> str:
+def as_currency(amount: Number, rate: float = 1) -> str:
     """
     Formats the given amount as a currency.
     :type amount: Number (int or float).
     :param rate: Multiply 'amount' by 'rate', useful for currency conversion.
-    :param currency_symbol: The symbol for the given currency. Defaults to '$'.
-    :return: String in the format of "$200.00".
+    :return: String in the format of "200.00".
     """
-    return "{}{:,.2f}".format(currency_symbol, (float(amount) * rate))
+    return "{:,.2f}".format((float(amount) * rate))
 
 
 @register.filter()
