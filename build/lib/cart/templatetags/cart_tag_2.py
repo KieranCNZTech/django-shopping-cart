@@ -23,7 +23,7 @@ def as_currency(amount: Number, rate: float = 1.0):
     Formats the given amount as a currency.
     :type amount: Number (int or float).
     :param rate: Multiply 'amount' by 'rate'.
-    :return: String in the format of "200.00".
+    :return: String in the format of "2,000.00".
     """
     total = float(amount) * float(rate)
     str_total = "{:,.2f}".format(total)
@@ -31,18 +31,19 @@ def as_currency(amount: Number, rate: float = 1.0):
     return str_total
 
 
-@register.filter
-def product_total(quantity: int, price: Number) -> str:
+@register.simple_tag
+def product_total(quantity: int, price: Number, rate: float = 1.0) -> str:
     """
     Returns a subtotal of the given inputs, quantity * price.
     :type quantity: Int.
     :type price: Number (int or float).
-    :return: String in the format of "$200.00".
+    :param rate: Float representing the exchange rate.
+    :return: String in the format of "2,000.00".
     """
     qty = int(quantity)
     price = float(price)
     product_subtotal = subtotal(qty, price)
-    return as_currency(product_subtotal)
+    return as_currency(product_subtotal, rate=rate)
 
 
 @register.filter
@@ -63,16 +64,17 @@ def sum_cart(a) -> float:
     return total
 
 
-@register.filter
-def cart_total(a) -> str:
+@register.simple_tag
+def cart_total(a, rate: float = 1.0) -> str:
     """
     Calculates the total of the given list of products and returns a
         pretty representation.
     :param a: List of products. Untyped as I'm unsure how 'dict_items' type truly works.
+    :param rate: Float representing the exchange rate.
     :return: Str in the format of "200.00".
     """
     total = sum_cart(a)
-    return as_currency(total)
+    return as_currency(total, rate=rate)
 
 
 @register.filter
