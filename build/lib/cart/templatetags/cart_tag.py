@@ -6,7 +6,7 @@ Number = Union[int, float]
 register = template.Library()
 
 
-@register.filter()
+@register.filter
 def subtotal(quantity: int, price: Number) -> float:
     """
     Returns a subtotal of the given inputs, quantity * price.
@@ -17,7 +17,7 @@ def subtotal(quantity: int, price: Number) -> float:
     return int(quantity) * float(price)
 
 
-@register.filter
+@register.simple_tag
 def as_currency(amount: Number, rate: float = 1) -> str:
     """
     Formats the given amount as a currency.
@@ -28,7 +28,7 @@ def as_currency(amount: Number, rate: float = 1) -> str:
     return "{:,.2f}".format(float(amount) * float(rate))
 
 
-@register.filter()
+@register.filter
 def product_total(quantity: int, price: Number, currency_symbol: str = "$") -> str:
     """
     Returns a subtotal of the given inputs, quantity * price.
