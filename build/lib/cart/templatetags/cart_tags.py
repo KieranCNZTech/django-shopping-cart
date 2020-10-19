@@ -7,14 +7,16 @@ register = template.Library()
 
 
 @register.filter
-def subtotal(quantity: int, price: Number) -> float:
+def product_subtotal(product) -> float:
     """
-    Returns a subtotal of the given inputs, quantity * price.
-    :type quantity: Int
-    :type price: Number (int or float).
+    Returns a subtotal of the product, quantity * price.
+    :type product: Dictionary.
     :return:
     """
-    return int(quantity) * float(price)
+    try:
+        return int(product["quantity"]) * float(product["price"])
+    except KeyError as key_err:
+        pass
 
 
 @register.filter
@@ -32,22 +34,19 @@ def as_currency(amount: Number, rate: float = 1.0):
 
 
 @register.simple_tag
-def product_total(quantity: int, price: Number, rate: float = 1.0) -> str:
+def product_total(product, rate: float = 1.0) -> str:
     """
-    Returns a subtotal of the given inputs, quantity * price.
-    :type quantity: Int.
-    :type price: Number (int or float).
+    Returns a pretty subtotal of the given product.
+    :type product: Dictionary.
     :param rate: Float representing the exchange rate.
     :return: String in the format of "2,000.00".
     """
-    qty = int(quantity)
-    price = float(price)
-    product_subtotal = subtotal(qty, price)
-    return as_currency(product_subtotal, rate=rate)
+    p_subtotal = product_subtotal(product)
+    return as_currency(p_subtotal, rate=rate)
 
 
 @register.filter
-def sum_cart(a) -> float:
+def cart_subtotal(a) -> float:
     """
     Gets the subtotal of each item in the cart.
     :param a: List of products. Untyped as I'm unsure how 'dict_items' type truly works.
@@ -57,10 +56,8 @@ def sum_cart(a) -> float:
     # a is of type 'dict_items'
     for i, this_tuple in enumerate(a):
         # key is product id, value is dictionary of product data
-        values = this_tuple[1]
-        qty = values['quantity']
-        price = values['price']
-        total += subtotal(qty, price)
+        product = this_tuple[1]
+        total += product_subtotal(product)
     return total
 
 
@@ -73,7 +70,7 @@ def cart_total(a, rate: float = 1.0) -> str:
     :param rate: Float representing the exchange rate.
     :return: Str in the format of "200.00".
     """
-    total = sum_cart(a)
+    total = cart_subtotal(a)
     return as_currency(total, rate=rate)
 
 
