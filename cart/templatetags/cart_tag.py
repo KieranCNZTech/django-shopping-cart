@@ -18,16 +18,15 @@ def subtotal(quantity: int, price: Number) -> float:
 
 
 @register.simple_tag
-def as_currency(amount: Number, rate: float = 1) -> str:
+def as_currency(amount, rate):
     """
     Formats the given amount as a currency.
     :type amount: Number (int or float).
-    :param rate: Multiply 'amount' by 'rate', useful for currency conversion.
+    :param rate: Multiply 'amount' by 'rate'.
     :return: String in the format of "200.00".
     """
     total = float(amount) * float(rate)
     str_total = "{:,.2f} test test".format(total)
-    print(f"total: {total}, str_total: {str_total}")
 
     return str_total
 
